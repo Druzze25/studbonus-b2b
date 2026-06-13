@@ -1,179 +1,838 @@
 <!DOCTYPE html>
-<html lang="ru" data-theme="light">
+<html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>StudBonus B2B — Партнёры и ВУЗы</title>
-//fonts.googleapis.com">
-//fonts.gstatic.com" crossorigin>
-//fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<style>
-:root,[data-theme="light"]{
---bg:#f7f6f2;--sf:#f9f8f5;--sf2:#fbfbf9;--sfo:#f3f0ec;--sfo2:#edeae5;
---sfd:#e6e4df;--div:#dcd9d5;--brd:#d4d1ca;
---tx:#28251d;--txm:#7a7974;--txb:#bab9b4;--txi:#f9f8f4;
---p:#01696f;--ph:#0c4e54;--phl:#cedcd8;
---ok:#437a22;--okh:#d4dfcc;
---wn:#964219;--wnh:#ddcfc6;
---er:#a12c7b;--erh:#e0ced7;
---gd:#d19900;--gdh:#e9e0c6;
---bl:#006494;--blh:#c6d8e4;
---fb:Inter,sans-serif;
---xs:clamp(.75rem,.7rem + .25vw,.875rem);
---sm:clamp(.875rem,.8rem + .35vw,1rem);
---base:clamp(1rem,.95rem + .25vw,1.125rem);
---lg:clamp(1.125rem,1rem + .75vw,1.5rem);
---xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
---s1:.25rem;--s2:.5rem;--s3:.75rem;--s4:1rem;
---s5:1.25rem;--s6:1.5rem;--s8:2rem;
---rsm:.375rem;--rmd:.5rem;--rlg:.75rem;--rxl:1rem;--rfl:9999px;
---shsm:0 1px 2px oklch(.2 .01 80/.06);
---shmd:0 4px 12px oklch(.2 .01 80/.08);
---shlg:0 12px 32px oklch(.2 .01 80/.12);
---tr:180ms cubic-bezier(.16,1,.3,1);
---sw:240px;
---bnav:0px;
-}
-[data-theme="dark"]{
---bg:#171614;--sf:#1c1b19;--sf2:#201f1d;--sfo:#1d1c1a;--sfo2:#22211f;
---sfd:#2d2c2a;--div:#262523;--brd:#393836;
---tx:#cdccca;--txm:#797876;--txb:#5a5957;--txi:#2b2a28;
---p:#4f98a3;--ph:#227f8b;--phl:#313b3b;
---ok:#6daa45;--okh:#3a4435;
---wn:#bb653b;--wnh:#564942;
---er:#d163a7;--erh:#4c3d46;
---gd:#e8af34;--gdh:#4d4332;
---bl:#5591c7;--blh:#3a4550;
---shsm:0 1px 2px oklch(0 0 0/.2);
---shmd:0 4px 12px oklch(0 0 0/.3);
---shlg:0 12px 32px oklch(0 0 0/.4);
-}
-*,::before,::after{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-font-smoothing:antialiased;height:100%;overflow:hidden}
-body{height:100dvh;overflow:hidden;font-family:var(--fb);font-size:var(--sm);color:var(--tx);background:var(--bg)}
-button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--p);outline-offset:3px;border-radius:var(--rsm)}
-a,button{transition:color var(--tr),background var(--tr),border-color var(--tr),box-shadow var(--tr)}
+  <meta charset="UTF-8" />
+  <title>StudBonus — B2B-панели управления</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="StudBonus — B2B-панели управления для партнёров и ВУЗов: HR-аналитика, база кандидатов, мониторинг активности студентов." />
+  <style>
+    :root {
+      --sb-bg: #050712;
+      --sb-bg-soft: #0b1020;
+      --sb-card-bg: #0f1528;
+      --sb-card-border: #1f2840;
+      --sb-accent: #34c759;
+      --sb-accent-soft: rgba(52, 199, 89, 0.15);
+      --sb-accent-hover: #28a945;
+      --sb-text: #f9fbff;
+      --sb-text-soft: #b5bed5;
+      --sb-muted: #7d87a3;
+      --sb-danger: #ff453a;
+      --sb-radius-lg: 24px;
+      --sb-radius-md: 16px;
+      --sb-radius-pill: 999px;
+      --sb-shadow-soft: 0 18px 60px rgba(0, 0, 0, 0.35);
+      --sb-shadow-subtle: 0 10px 30px rgba(0, 0, 0, 0.25);
+      --sb-border: 1px solid rgba(255, 255, 255, 0.06);
+    }
 
-/* ROLE SELECT */
-#rs{display:flex;flex-direction:column;align-items:center;justify-content:center;
-height:100dvh;gap:var(--s8);padding:var(--s8);background:var(--bg)}
-.rs-logo{display:flex;align-items:center;gap:var(--s3);font-size:var(--lg);font-weight:700;color:var(--p)}
-.rs-h{font-size:var(--xl);font-weight:700;text-align:center}
-.rs-p{font-size:var(--sm);color:var(--txm);text-align:center;max-width:480px}
-.rs-cards{display:flex;gap:var(--s6);flex-wrap:wrap;justify-content:center}
-.rs-card{background:var(--sf);border:1px solid var(--brd);border-radius:var(--rxl);
-padding:var(--s8);width:270px;cursor:pointer;text-align:left;
-box-shadow:var(--shsm);transition:all var(--tr)}
-.rs-card:hover{box-shadow:var(--shmd);border-color:var(--p);transform:translateY(-2px)}
-.rs-icon{font-size:2.5rem;margin-bottom:var(--s4)}
-.rs-name{font-size:var(--base);font-weight:700;margin-bottom:var(--s2)}
-.rs-desc{font-size:var(--xs);color:var(--txm);line-height:1.6}
-.rs-cta{display:inline-flex;align-items:center;gap:var(--s2);margin-top:var(--s4);
-padding:var(--s2) var(--s4);background:var(--p);color:#fff;
-border-radius:var(--rfl);font-size:var(--xs);font-weight:600}
+    * {
+      box-sizing: border-box;
+    }
 
-/* APP */
-#app{display:none;height:100dvh;overflow:hidden}
-#app.on{display:grid;grid-template-columns:var(--sw) 1fr}
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background-color: var(--sb-bg);
+      color: var(--sb-text);
+      -webkit-font-smoothing: antialiased;
+    }
 
-/* SIDEBAR */
-.sb{background:var(--sf);border-right:1px solid var(--brd);
-display:flex;flex-direction:column;overflow-y:auto;
-overscroll-behavior:contain;padding:var(--s4) 0}
-.sb-logo{display:flex;align-items:center;gap:var(--s3);
-padding:var(--s2) var(--s5);margin-bottom:var(--s4);
-font-weight:700;font-size:var(--sm)}
-.sb-badge{margin:0 var(--s4) var(--s4);padding:var(--s2) var(--s3);
-background:var(--phl);color:var(--p);border-radius:var(--rmd);
-font-size:var(--xs);font-weight:600;display:flex;align-items:center;gap:var(--s2)}
-.ni{display:flex;align-items:center;gap:var(--s3);padding:var(--s2) var(--s5);
-font-size:var(--sm);font-weight:500;color:var(--txm);
-cursor:pointer;width:100%;text-align:left;min-height:44px}
-.ni:hover{background:var(--sfo);color:var(--tx)}
-.ni.act{background:var(--phl);color:var(--p);font-weight:600}
-.ni-icon{font-size:1rem;width:20px;text-align:center}
-.sb-bot{margin-top:auto;padding:var(--s4) var(--s4) 0;
-border-top:1px solid var(--brd);display:flex;flex-direction:column;gap:var(--s2)}
-.sb-u{display:flex;align-items:center;gap:var(--s3);padding:var(--s3);
-border-radius:var(--rmd);background:var(--sfo)}
-.sb-av{width:32px;height:32px;border-radius:var(--rfl);background:var(--p);
-color:#fff;display:flex;align-items:center;justify-content:center;
-font-size:var(--xs);font-weight:700;flex-shrink:0}
-.sb-un{font-size:var(--xs);font-weight:600;overflow:hidden;
-text-overflow:ellipsis;white-space:nowrap}
-.sb-ur{font-size:.68rem;color:var(--txm)}
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-/* BOTTOM NAV (mobile only) */
-.bnav{display:none;position:fixed;bottom:0;left:0;right:0;
-background:var(--sf);border-top:1px solid var(--brd);
-padding:var(--s2) var(--s4);padding-bottom:calc(var(--s2) + env(safe-area-inset-bottom));
-z-index:100;gap:4px}
-.bnav-item{display:flex;flex-direction:column;align-items:center;
-gap:2px;flex:1;padding:var(--s2) var(--s1);
-font-size:.6rem;font-weight:500;color:var(--txm);
-cursor:pointer;border-radius:var(--rmd);
-min-height:44px;justify-content:center;transition:all var(--tr)}
-.bnav-item:hover,.bnav-item.act{color:var(--p);background:var(--phl)}
-.bnav-icon{font-size:1.2rem;line-height:1}
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-/* MAIN */
-.ma{display:flex;flex-direction:column;overflow:hidden;height:100dvh}
-.tb{display:flex;align-items:center;justify-content:space-between;
-padding:var(--s4) var(--s8);background:var(--sf);
-border-bottom:1px solid var(--brd);flex-shrink:0;z-index:10}
-.tb-t{font-size:var(--base);font-weight:700}
-.tb-s{font-size:var(--xs);color:var(--txm)}
-.tb-a{display:flex;align-items:center;gap:var(--s3)}
+    /* Layout */
 
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;gap:var(--s2);
-padding:var(--s2) var(--s4);border-radius:var(--rmd);
-font-size:var(--xs);font-weight:600;cursor:pointer;
-white-space:nowrap;min-height:36px}
-.btn-p{background:var(--p);color:#fff}.btn-p:hover{background:var(--ph)}
-.btn-g{background:transparent;color:var(--txm);border:1px solid var(--brd)}
-.btn-g:hover{background:var(--sfo);color:var(--tx)}
-.btn-sm{padding:var(--s1) var(--s3);font-size:.7rem;min-height:32px}
-.tb-toggle{width:44px;height:44px;border-radius:var(--rmd);
-display:flex;align-items:center;justify-content:center;
-background:var(--sfo);color:var(--txm)}
-.tb-toggle:hover{background:var(--sfd);color:var(--tx)}
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: radial-gradient(circle at top left, #1d2a50 0, #050712 52%, #02030a 100%);
+    }
 
-/* CONTENT */
-.ct{overflow-y:auto;overscroll-behavior:contain;flex:1;
-padding:var(--s6) var(--s8);padding-bottom:calc(var(--s6) + var(--bnav))}
+    .page-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 20px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
 
-/* KPI */
-.kg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
-gap:var(--s4);margin-bottom:var(--s6)}
-.kp{background:var(--sf);border:1px solid var(--brd);border-radius:var(--rlg);
-padding:var(--s5);box-shadow:var(--shsm)}
-.kp-l{font-size:var(--xs);color:var(--txm);font-weight:600;
-text-transform:uppercase;letter-spacing:.05em;margin-bottom:var(--s2)}
-.kp-v{font-size:var(--xl);font-weight:700;
-font-variant-numeric:tabular-nums lining-nums;line-height:1}
-.kp-d{display:flex;align-items:center;gap:var(--s1);margin-top:var(--s2);
-font-size:var(--xs);font-weight:600;flex-wrap:wrap}
-.dup{color:var(--ok)}.ddn{color:var(--er)}.dfl{color:var(--txm)}
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
 
-/* CHARTS */
-.cg{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4);margin-bottom:var(--s6)}
-.cc{background:var(--sf);border:1px solid var(--brd);border-radius:var(--rlg);
-padding:var(--s5);box-shadow:var(--shsm)}
-.cc-full{grid-column:1/-1}
-.cc-t{font-size:var(--sm);font-weight:700;margin-bottom:var(--s4)}
-.cw{position:relative;height:200px}
-.cw-tall{height:260px}
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-/* TABLE */
-.tc{background:var(--sf);border:1px solid var(--brd);border-radius:var(--rlg);
-box-shadow:var(--shsm);overflow:hidden;margin-bottom:var(--s6)}
-.tc-h{display:flex;align-items:center;justify-content:space-between;
-padding:var(--s4) var(--s5);border-bottom:1px solid var(--div)}
-.tc-t{font-size:var(--sm);font-weight:700}
-.tc-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-table{width:100%;border-collapse:collapse;min-width:500px}
-th{padding:var(--s3) var(--s5);text-align:left;font-size:var(--xs);font-weight:600;
-text-transform:uppercase;letter-spacing:.
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 30% 20%, #5af58b, #1a9a4b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #02040a;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .logo-text-main {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .logo-text-sub {
+      font-size: 12px;
+      color: var(--sb-muted);
+      margin-top: 2px;
+    }
+
+    .logo-title-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-tag {
+      padding: 4px 10px;
+      border-radius: var(--sb-radius-pill);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(8, 14, 32, 0.7);
+      color: var(--sb-text-soft);
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(10px);
+    }
+
+    .header-tag-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--sb-accent);
+      box-shadow: 0 0 0 4px rgba(52, 199, 89, 0.3);
+    }
+
+    .header-profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 10px 4px 4px;
+      border-radius: var(--sb-radius-pill);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: linear-gradient(135deg, rgba(21, 30, 61, 0.95), rgba(7, 11, 26, 0.95));
+      box-shadow: var(--sb-shadow-subtle);
+    }
+
+    .header-profile-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #202842, #11192f);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .header-profile-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header-profile-name {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .header-profile-role {
+      font-size: 11px;
+      color: var(--sb-muted);
+    }
+
+    .header-change-role {
+      font-size: 12px;
+      color: var(--sb-text-soft);
+      opacity: 0.9;
+      cursor: pointer;
+      transition: color 0.18s ease, opacity 0.18s ease;
+    }
+
+    .header-change-role:hover {
+      color: var(--sb-accent);
+      opacity: 1;
+    }
+
+    /* Hero section */
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .hero-main {
+      padding: 24px 24px 22px;
+      border-radius: var(--sb-radius-lg);
+      border: var(--sb-border);
+      background:
+        radial-gradient(circle at top left, rgba(103, 224, 146, 0.16), transparent 58%),
+        linear-gradient(145deg, rgba(17, 25, 50, 0.95), rgba(5, 7, 18, 0.98));
+      box-shadow: var(--sb-shadow-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px 4px 6px;
+      border-radius: var(--sb-radius-pill);
+      background: rgba(5, 15, 30, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: var(--sb-text-soft);
+      font-size: 12px;
+      backdrop-filter: blur(14px);
+      max-width: max-content;
+    }
+
+    .hero-pill-label {
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: var(--sb-accent-soft);
+      color: var(--sb-accent);
+      font-weight: 500;
+      font-size: 11px;
+    }
+
+    .hero-title {
+      font-size: 28px;
+      line-height: 1.25;
+      font-weight: 650;
+      letter-spacing: 0.01em;
+    }
+
+    .hero-title span {
+      color: var(--sb-accent);
+    }
+
+    .hero-subtitle {
+      font-size: 14px;
+      color: var(--sb-text-soft);
+      max-width: 480px;
+    }
+
+    .hero-metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 2px;
+    }
+
+    .metric {
+      min-width: 120px;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--sb-muted);
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .metric-caption {
+      font-size: 12px;
+      color: var(--sb-text-soft);
+      margin-top: 2px;
+    }
+
+    .hero-footer {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      justify-content: space-between;
+    }
+
+    .hero-footer-left {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-note {
+      font-size: 11px;
+      color: var(--sb-muted);
+    }
+
+    .hero-note span {
+      color: var(--sb-accent);
+      font-weight: 500;
+    }
+
+    .hero-tag-secondary {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: var(--sb-radius-pill);
+      background: rgba(14, 22, 45, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: var(--sb-text-soft);
+    }
+
+    .hero-cta-text {
+      font-size: 11px;
+      color: var(--sb-muted);
+    }
+
+    /* Role cards */
+
+    .hero-side {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .role-caption {
+      font-size: 12px;
+      color: var(--sb-text-soft);
+    }
+
+    .roles-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .role-card {
+      border-radius: var(--sb-radius-md);
+      border: 1px solid var(--sb-card-border);
+      background: radial-gradient(circle at top left, rgba(89, 160, 255, 0.16), transparent 55%),
+        linear-gradient(135deg, #0c1122, #050713);
+      padding: 16px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+      transition: transform 0.16s ease-out, box-shadow 0.16s ease-out, border-color 0.16s ease-out, background 0.16s ease-out;
+      cursor: pointer;
+    }
+
+    .role-card--university {
+      background: radial-gradient(circle at top left, rgba(94, 231, 158, 0.16), transparent 58%),
+        linear-gradient(135deg, #0b1524, #040612);
+    }
+
+    .role-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 46px rgba(0, 0, 0, 0.6);
+      border-color: rgba(101, 180, 255, 0.8);
+    }
+
+    .role-card--university:hover {
+      border-color: rgba(68, 214, 132, 0.95);
+    }
+
+    .role-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .role-card-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .role-card-title {
+      font-size: 16px;
+      font-weight: 550;
+    }
+
+    .role-card-subtitle {
+      font-size: 12px;
+      color: var(--sb-text-soft);
+      max-width: 260px;
+    }
+
+    .role-card-chip {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: var(--sb-radius-pill);
+      background: rgba(7, 13, 29, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      color: var(--sb-muted);
+    }
+
+    .role-card-list {
+      margin: 6px 0 0;
+      padding: 0;
+      list-style: none;
+      font-size: 12px;
+      color: var(--sb-text-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .role-card-list li {
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+    }
+
+    .role-card-bullet {
+      margin-top: 4px;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(181, 190, 213, 0.85);
+      flex-shrink: 0;
+    }
+
+    .role-card-footer {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .role-card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 12px;
+      border-radius: var(--sb-radius-pill);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: linear-gradient(135deg, #101831, #050813);
+      color: var(--sb-text);
+      font-size: 12px;
+      font-weight: 500;
+      transition: background 0.16s ease-out, border-color 0.16s ease-out, transform 0.16s ease-out;
+    }
+
+    .role-card-link span {
+      font-size: 13px;
+      transform: translateX(0);
+      transition: transform 0.16s ease-out;
+    }
+
+    .role-card:hover .role-card-link span {
+      transform: translateX(2px);
+    }
+
+    .role-card-meta {
+      font-size: 11px;
+      color: var(--sb-muted);
+    }
+
+    /* CTA buttons row (for mobile primary actions) */
+
+    .roles-cta-row {
+      display: none;
+      margin-top: 6px;
+      gap: 10px;
+    }
+
+    .roles-cta-button {
+      flex: 1;
+      text-align: center;
+      font-size: 13px;
+      padding: 10px 12px;
+      border-radius: var(--sb-radius-pill);
+      border: none;
+      outline: none;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .roles-cta-button--primary {
+      background: linear-gradient(135deg, var(--sb-accent), var(--sb-accent-hover));
+      color: #02040a;
+      box-shadow: 0 13px 32px rgba(52, 199, 89, 0.45);
+    }
+
+    .roles-cta-button--ghost {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--sb-text-soft);
+    }
+
+    /* Footer */
+
+    footer {
+      margin-top: auto;
+      padding: 0 20px 18px;
+    }
+
+    .footer-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      padding-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-left {
+      font-size: 11px;
+      color: var(--sb-muted);
+    }
+
+    .footer-right {
+      display: flex;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--sb-text-soft);
+    }
+
+    .footer-link {
+      opacity: 0.85;
+      cursor: pointer;
+      transition: opacity 0.16s ease, color 0.16s ease;
+    }
+
+    .footer-link:hover {
+      opacity: 1;
+      color: var(--sb-accent);
+    }
+
+    /* Responsive */
+
+    @media (max-width: 1024px) {
+      .page-inner {
+        padding: 20px 16px 28px;
+      }
+
+      .hero {
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.3fr);
+        gap: 18px;
+      }
+
+      .hero-main {
+        padding: 20px 18px 18px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .header-right {
+        align-self: stretch;
+        justify-content: space-between;
+      }
+
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-main {
+        order: 1;
+      }
+
+      .hero-side {
+        order: 2;
+      }
+
+      .hero-title {
+        font-size: 24px;
+      }
+
+      .hero-subtitle {
+        font-size: 13px;
+      }
+
+      .hero-metrics {
+        gap: 12px;
+      }
+
+      .metric {
+        min-width: 100px;
+      }
+
+      .roles-cta-row {
+        display: flex;
+      }
+
+      .role-card {
+        padding: 15px 14px 13px;
+      }
+
+      .role-card-subtitle {
+        max-width: none;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .page-inner {
+        padding: 18px 14px 24px;
+      }
+
+      .hero-main {
+        padding: 16px 14px 14px;
+      }
+
+      .hero-title {
+        font-size: 21px;
+      }
+
+      .hero-subtitle {
+        font-size: 12px;
+      }
+
+      .hero-metrics {
+        flex-direction: column;
+      }
+
+      .header-profile {
+        padding-right: 8px;
+      }
+
+      .header-profile-avatar {
+        width: 24px;
+        height: 24px;
+        font-size: 12px;
+      }
+
+      .role-card {
+        border-radius: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="page-inner">
+      <header>
+        <div class="logo" aria-label="StudBonus">
+          <div class="logo-mark">SB</div>
+          <div class="logo-title-wrap">
+            <div class="logo-text-main">StudBonus</div>
+            <div class="logo-text-sub">B2B-панели управления</div>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <div class="header-tag">
+            <div class="header-tag-dot"></div>
+            <span>Система для работы с талантами</span>
+          </div>
+
+          <div class="header-profile">
+            <div class="header-profile-avatar">СТ</div>
+            <div class="header-profile-info">
+              <div class="header-profile-name">ПАО «СберТех»</div>
+              <div class="header-profile-role">Партнёр · HR-tech</div>
+            </div>
+            <button class="header-change-role" type="button">
+              ← Сменить роль
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main class="hero" role="main">
+        <section class="hero-main" aria-label="Описание платформы">
+          <div class="hero-pill">
+            <span class="hero-pill-label">B2B-панели</span>
+            <span>Управление партнёрами и ВУЗами в одной экосистеме</span>
+          </div>
+
+          <h1 class="hero-title">
+            Личные кабинеты <span>партнёра</span> и <span>ВУЗа</span> платформы StudBonus
+          </h1>
+
+          <p class="hero-subtitle">
+            Выберите роль, чтобы войти в профиль и управлять задачами, студентами, аналитикой и совместными образовательными проектами.
+          </p>
+
+          <div class="hero-metrics">
+            <div class="metric">
+              <div class="metric-label">Активные партнёры</div>
+              <div class="metric-value">120+</div>
+              <div class="metric-caption">HR-команд и компаний в системе</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Студенты в воронке</div>
+              <div class="metric-value">15 000+</div>
+              <div class="metric-caption">кандидатов в базе резюме</div>
+            </div>
+          </div>
+
+          <div class="hero-footer">
+            <div class="hero-footer-left">
+              <span class="hero-note">
+                Для входа используйте корпоративную <span>пригласительную ссылку</span> или аккаунт, выданный администратором.
+              </span>
+            </div>
+            <span class="hero-cta-text">Роли можно переключать в любой момент</span>
+          </div>
+        </section>
+
+        <aside class="hero-side" aria-label="Выбор кабинета">
+          <p class="role-caption">
+            Выберите роль, с которой вы работаете в StudBonus. Доступные данные и инструменты зависят от вашего статуса.
+          </p>
+
+          <div class="roles-grid">
+            <!-- Партнёр -->
+            <article class="role-card" aria-label="Кабинет партнёра">
+              <div class="role-card-header">
+                <div class="role-card-title-wrap">
+                  <h2 class="role-card-title">Кабинет партнёра</h2>
+                  <p class="role-card-subtitle">
+                    HR-аналитика, база кандидатов-студентов, воронка найма, задачи и офферы для привлечения талантов.
+                  </p>
+                </div>
+                <span class="role-card-chip">HR-команда / бизнес</span>
+              </div>
+
+              <ul class="role-card-list">
+                <li>
+                  <span class="role-card-bullet"></span>
+                  <span>Работа с воронкой найма и статусами кандидатов.</span>
+                </li>
+                <li>
+                  <span class="role-card-bullet"></span>
+                  <span>Размещение задач, стажировок и офферов для студентов.</span>
+                </li>
+                <li>
+                  <span class="role-card-bullet"></span>
+                  <span>Метрики вовлечённости и эффективность каналов привлечения.</span>
+                </li>
+              </ul>
+
+              <div class="role-card-footer">
+                <a href="#partner-login" class="role-card-link">
+                  Войти в кабинет
+                  <span>→</span>
+                </a>
+                <div class="role-card-meta">
+                  Доступ по приглашению администратора
+                </div>
+              </div>
+            </article>
+
+            <!-- ВУЗ -->
+            <article class="role-card role-card--university" aria-label="Кабинет ВУЗа">
+              <div class="role-card-header">
+                <div class="role-card-title-wrap">
+                  <h2 class="role-card-title">Кабинет ВУЗа</h2>
+                  <p class="role-card-subtitle">
+                    Мониторинг активности студентов, управление заданиями, партнёрская сеть и настройки платформы.
+                  </p>
+                </div>
+                <span class="role-card-chip">Деканат / карьерный центр</span>
+              </div>
+
+              <ul class="role-card-list">
+                <li>
+                  <span class="role-card-bullet"></span>
+                  <span>Отслеживание участия студентов в задачах и проектах партнёров.</span>
+                </li>
+                <li>
+                  <span class="role-card-bullet"></span>
+                  <span>Управление заданиями, образовательными треками и событиями.</span>
+                </li>
+                <li>
+                  <span class="role-card-bullet"></span>
+                  <span>Аналитика по программам, факультетам и партнёрским сущностям.</span>
+                </li>
+              </ul>
+
+              <div class="role-card-footer">
+                <a href="#university-login" class="role-card-link">
+                  Войти в кабинет
+                  <span>→</span>
+                </a>
+                <div class="role-card-meta">
+                  Доступ для аккредитованных ВУЗов
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <!-- Дополнительные CTA на мобильных -->
+          <div class="roles-cta-row">
+            <button class="roles-cta-button roles-cta-button--primary" type="button">
+              Войти как партнёр
+            </button>
+            <button class="roles-cta-button roles-cta-button--ghost" type="button">
+              Войти как ВУЗ
+            </button>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-left">
+          StudBonus · Платформа для работы с талантами · © 2026
+        </div>
+        <div class="footer-right">
+          <span class="footer-link">Поддержка</span>
+          <span class="footer-link">Документация</span>
+          <span class="footer-link">Политика конфиденциальности</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
