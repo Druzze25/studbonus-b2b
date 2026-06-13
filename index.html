@@ -1,838 +1,726 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <title>StudBonus — B2B-панели управления</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="StudBonus — B2B-панели управления для партнёров и ВУЗов: HR-аналитика, база кандидатов, мониторинг активности студентов." />
-  <style>
-    :root {
-      --sb-bg: #050712;
-      --sb-bg-soft: #0b1020;
-      --sb-card-bg: #0f1528;
-      --sb-card-border: #1f2840;
-      --sb-accent: #34c759;
-      --sb-accent-soft: rgba(52, 199, 89, 0.15);
-      --sb-accent-hover: #28a945;
-      --sb-text: #f9fbff;
-      --sb-text-soft: #b5bed5;
-      --sb-muted: #7d87a3;
-      --sb-danger: #ff453a;
-      --sb-radius-lg: 24px;
-      --sb-radius-md: 16px;
-      --sb-radius-pill: 999px;
-      --sb-shadow-soft: 0 18px 60px rgba(0, 0, 0, 0.35);
-      --sb-shadow-subtle: 0 10px 30px rgba(0, 0, 0, 0.25);
-      --sb-border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Segoe UI", sans-serif;
-      background-color: var(--sb-bg);
-      color: var(--sb-text);
-      -webkit-font-smoothing: antialiased;
-    }
-
-    body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    /* Layout */
-
-    .page {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      background: radial-gradient(circle at top left, #1d2a50 0, #050712 52%, #02030a 100%);
-    }
-
-    .page-inner {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 24px 20px 40px;
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
-    }
-
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo-mark {
-      width: 32px;
-      height: 32px;
-      border-radius: 12px;
-      background: radial-gradient(circle at 30% 20%, #5af58b, #1a9a4b);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #02040a;
-      font-weight: 700;
-      font-size: 18px;
-    }
-
-    .logo-text-main {
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-    }
-
-    .logo-text-sub {
-      font-size: 12px;
-      color: var(--sb-muted);
-      margin-top: 2px;
-    }
-
-    .logo-title-wrap {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .header-tag {
-      padding: 4px 10px;
-      border-radius: var(--sb-radius-pill);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(8, 14, 32, 0.7);
-      color: var(--sb-text-soft);
-      font-size: 12px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      backdrop-filter: blur(10px);
-    }
-
-    .header-tag-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--sb-accent);
-      box-shadow: 0 0 0 4px rgba(52, 199, 89, 0.3);
-    }
-
-    .header-profile {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 4px 10px 4px 4px;
-      border-radius: var(--sb-radius-pill);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      background: linear-gradient(135deg, rgba(21, 30, 61, 0.95), rgba(7, 11, 26, 0.95));
-      box-shadow: var(--sb-shadow-subtle);
-    }
-
-    .header-profile-avatar {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #202842, #11192f);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .header-profile-info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .header-profile-name {
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    .header-profile-role {
-      font-size: 11px;
-      color: var(--sb-muted);
-    }
-
-    .header-change-role {
-      font-size: 12px;
-      color: var(--sb-text-soft);
-      opacity: 0.9;
-      cursor: pointer;
-      transition: color 0.18s ease, opacity 0.18s ease;
-    }
-
-    .header-change-role:hover {
-      color: var(--sb-accent);
-      opacity: 1;
-    }
-
-    /* Hero section */
-
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr);
-      gap: 24px;
-      align-items: stretch;
-    }
-
-    .hero-main {
-      padding: 24px 24px 22px;
-      border-radius: var(--sb-radius-lg);
-      border: var(--sb-border);
-      background:
-        radial-gradient(circle at top left, rgba(103, 224, 146, 0.16), transparent 58%),
-        linear-gradient(145deg, rgba(17, 25, 50, 0.95), rgba(5, 7, 18, 0.98));
-      box-shadow: var(--sb-shadow-soft);
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 10px 4px 6px;
-      border-radius: var(--sb-radius-pill);
-      background: rgba(5, 15, 30, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      color: var(--sb-text-soft);
-      font-size: 12px;
-      backdrop-filter: blur(14px);
-      max-width: max-content;
-    }
-
-    .hero-pill-label {
-      padding: 4px 9px;
-      border-radius: 999px;
-      background: var(--sb-accent-soft);
-      color: var(--sb-accent);
-      font-weight: 500;
-      font-size: 11px;
-    }
-
-    .hero-title {
-      font-size: 28px;
-      line-height: 1.25;
-      font-weight: 650;
-      letter-spacing: 0.01em;
-    }
-
-    .hero-title span {
-      color: var(--sb-accent);
-    }
-
-    .hero-subtitle {
-      font-size: 14px;
-      color: var(--sb-text-soft);
-      max-width: 480px;
-    }
-
-    .hero-metrics {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-top: 2px;
-    }
-
-    .metric {
-      min-width: 120px;
-    }
-
-    .metric-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--sb-muted);
-      margin-bottom: 4px;
-    }
-
-    .metric-value {
-      font-size: 18px;
-      font-weight: 600;
-    }
-
-    .metric-caption {
-      font-size: 12px;
-      color: var(--sb-text-soft);
-      margin-top: 2px;
-    }
-
-    .hero-footer {
-      margin-top: 8px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 12px;
-      justify-content: space-between;
-    }
-
-    .hero-footer-left {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .hero-note {
-      font-size: 11px;
-      color: var(--sb-muted);
-    }
-
-    .hero-note span {
-      color: var(--sb-accent);
-      font-weight: 500;
-    }
-
-    .hero-tag-secondary {
-      font-size: 11px;
-      padding: 4px 8px;
-      border-radius: var(--sb-radius-pill);
-      background: rgba(14, 22, 45, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      color: var(--sb-text-soft);
-    }
-
-    .hero-cta-text {
-      font-size: 11px;
-      color: var(--sb-muted);
-    }
-
-    /* Role cards */
-
-    .hero-side {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .role-caption {
-      font-size: 12px;
-      color: var(--sb-text-soft);
-    }
-
-    .roles-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-    }
-
-    .role-card {
-      border-radius: var(--sb-radius-md);
-      border: 1px solid var(--sb-card-border);
-      background: radial-gradient(circle at top left, rgba(89, 160, 255, 0.16), transparent 55%),
-        linear-gradient(135deg, #0c1122, #050713);
-      padding: 16px 16px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
-      transition: transform 0.16s ease-out, box-shadow 0.16s ease-out, border-color 0.16s ease-out, background 0.16s ease-out;
-      cursor: pointer;
-    }
-
-    .role-card--university {
-      background: radial-gradient(circle at top left, rgba(94, 231, 158, 0.16), transparent 58%),
-        linear-gradient(135deg, #0b1524, #040612);
-    }
-
-    .role-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 18px 46px rgba(0, 0, 0, 0.6);
-      border-color: rgba(101, 180, 255, 0.8);
-    }
-
-    .role-card--university:hover {
-      border-color: rgba(68, 214, 132, 0.95);
-    }
-
-    .role-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 10px;
-    }
-
-    .role-card-title-wrap {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .role-card-title {
-      font-size: 16px;
-      font-weight: 550;
-    }
-
-    .role-card-subtitle {
-      font-size: 12px;
-      color: var(--sb-text-soft);
-      max-width: 260px;
-    }
-
-    .role-card-chip {
-      font-size: 11px;
-      padding: 4px 9px;
-      border-radius: var(--sb-radius-pill);
-      background: rgba(7, 13, 29, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      color: var(--sb-muted);
-    }
-
-    .role-card-list {
-      margin: 6px 0 0;
-      padding: 0;
-      list-style: none;
-      font-size: 12px;
-      color: var(--sb-text-soft);
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .role-card-list li {
-      display: flex;
-      gap: 6px;
-      align-items: flex-start;
-    }
-
-    .role-card-bullet {
-      margin-top: 4px;
-      width: 3px;
-      height: 3px;
-      border-radius: 50%;
-      background: rgba(181, 190, 213, 0.85);
-      flex-shrink: 0;
-    }
-
-    .role-card-footer {
-      margin-top: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .role-card-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 8px 12px;
-      border-radius: var(--sb-radius-pill);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: linear-gradient(135deg, #101831, #050813);
-      color: var(--sb-text);
-      font-size: 12px;
-      font-weight: 500;
-      transition: background 0.16s ease-out, border-color 0.16s ease-out, transform 0.16s ease-out;
-    }
-
-    .role-card-link span {
-      font-size: 13px;
-      transform: translateX(0);
-      transition: transform 0.16s ease-out;
-    }
-
-    .role-card:hover .role-card-link span {
-      transform: translateX(2px);
-    }
-
-    .role-card-meta {
-      font-size: 11px;
-      color: var(--sb-muted);
-    }
-
-    /* CTA buttons row (for mobile primary actions) */
-
-    .roles-cta-row {
-      display: none;
-      margin-top: 6px;
-      gap: 10px;
-    }
-
-    .roles-cta-button {
-      flex: 1;
-      text-align: center;
-      font-size: 13px;
-      padding: 10px 12px;
-      border-radius: var(--sb-radius-pill);
-      border: none;
-      outline: none;
-      cursor: pointer;
-      font-weight: 500;
-    }
-
-    .roles-cta-button--primary {
-      background: linear-gradient(135deg, var(--sb-accent), var(--sb-accent-hover));
-      color: #02040a;
-      box-shadow: 0 13px 32px rgba(52, 199, 89, 0.45);
-    }
-
-    .roles-cta-button--ghost {
-      background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: var(--sb-text-soft);
-    }
-
-    /* Footer */
-
-    footer {
-      margin-top: auto;
-      padding: 0 20px 18px;
-    }
-
-    .footer-inner {
-      max-width: 1120px;
-      margin: 0 auto;
-      border-top: 1px solid rgba(255, 255, 255, 0.04);
-      padding-top: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .footer-left {
-      font-size: 11px;
-      color: var(--sb-muted);
-    }
-
-    .footer-right {
-      display: flex;
-      gap: 10px;
-      font-size: 11px;
-      color: var(--sb-text-soft);
-    }
-
-    .footer-link {
-      opacity: 0.85;
-      cursor: pointer;
-      transition: opacity 0.16s ease, color 0.16s ease;
-    }
-
-    .footer-link:hover {
-      opacity: 1;
-      color: var(--sb-accent);
-    }
-
-    /* Responsive */
-
-    @media (max-width: 1024px) {
-      .page-inner {
-        padding: 20px 16px 28px;
-      }
-
-      .hero {
-        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.3fr);
-        gap: 18px;
-      }
-
-      .hero-main {
-        padding: 20px 18px 18px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-      }
-
-      .header-right {
-        align-self: stretch;
-        justify-content: space-between;
-      }
-
-      .hero {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .hero-main {
-        order: 1;
-      }
-
-      .hero-side {
-        order: 2;
-      }
-
-      .hero-title {
-        font-size: 24px;
-      }
-
-      .hero-subtitle {
-        font-size: 13px;
-      }
-
-      .hero-metrics {
-        gap: 12px;
-      }
-
-      .metric {
-        min-width: 100px;
-      }
-
-      .roles-cta-row {
-        display: flex;
-      }
-
-      .role-card {
-        padding: 15px 14px 13px;
-      }
-
-      .role-card-subtitle {
-        max-width: none;
-      }
-
-      .footer-inner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .page-inner {
-        padding: 18px 14px 24px;
-      }
-
-      .hero-main {
-        padding: 16px 14px 14px;
-      }
-
-      .hero-title {
-        font-size: 21px;
-      }
-
-      .hero-subtitle {
-        font-size: 12px;
-      }
-
-      .hero-metrics {
-        flex-direction: column;
-      }
-
-      .header-profile {
-        padding-right: 8px;
-      }
-
-      .header-profile-avatar {
-        width: 24px;
-        height: 24px;
-        font-size: 12px;
-      }
-
-      .role-card {
-        border-radius: 14px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudBonus B2B — Партнёры и ВУЗы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root,[data-theme=light]{
+--bg:#f7f6f2;--sf:#f9f8f5;--sf2:#fbfbf9;--sfo:#f3f0ec;--sfo2:#edeae5;
+--sfd:#e6e4df;--div:#dcd9d5;--brd:#d4d1ca;
+--tx:#28251d;--txm:#7a7974;--txf:#bab9b4;--txi:#f9f8f4;
+--p:#01696f;--ph:#0c4e54;--phl:#cedcd8;
+--ok:#437a22;--okh:#d4dfcc;
+--wn:#964219;--wnh:#ddcfc6;
+--er:#a12c7b;--erh:#e0ced7;
+--gd:#d19900;--gdh:#e9e0c6;
+--bl:#006494;--blh:#c6d8e4;
+--fb:Inter,sans-serif;
+--xs:clamp(.75rem,.7rem + .25vw,.875rem);
+--sm:clamp(.875rem,.8rem + .35vw,1rem);
+--base:clamp(1rem,.95rem + .25vw,1.125rem);
+--lg:clamp(1.125rem,1rem + .75vw,1.5rem);
+--xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
+--s1:.25rem;--s2:.5rem;--s3:.75rem;--s4:1rem;
+--s5:1.25rem;--s6:1.5rem;--s8:2rem;
+--rsm:.375rem;--rmd:.5rem;--rlg:.75rem;--rxl:1rem;--rfl:9999px;
+--shsm:0 1px 2px oklch(.2 .01 80/.06);
+--shmd:0 4px 12px oklch(.2 .01 80/.08);
+--shlg:0 12px 32px oklch(.2 .01 80/.12);
+--tr:180ms cubic-bezier(.16,1,.3,1);
+--sw:240px}
+[data-theme=dark]{
+--bg:#171614;--sf:#1c1b19;--sf2:#201f1d;--sfo:#1d1c1a;--sfo2:#22211f;
+--sfd:#2d2c2a;--div:#262523;--brd:#393836;
+--tx:#cdccca;--txm:#797876;--txf:#5a5957;--txi:#2b2a28;
+--p:#4f98a3;--ph:#227f8b;--phl:#313b3b;
+--ok:#6daa45;--okh:#3a4435;
+--wn:#bb653b;--wnh:#564942;
+--er:#d163a7;--erh:#4c3d46;
+--gd:#e8af34;--gdh:#4d4332;
+--bl:#5591c7;--blh:#3a4550;
+--shsm:0 1px 2px oklch(0 0 0/.2);
+--shmd:0 4px 12px oklch(0 0 0/.3);
+--shlg:0 12px 32px oklch(0 0 0/.4)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;height:100%;overflow:hidden}
+body{height:100dvh;overflow:hidden;font-family:var(--fb);
+  font-size:var(--sm);color:var(--tx);background:var(--bg)}
+button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--p);outline-offset:3px;border-radius:var(--rsm)}
+a,button{transition:color var(--tr),background var(--tr),border-color var(--tr),box-shadow var(--tr)}
+/* ROLE SELECT */
+#rs{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:100dvh;gap:var(--s8);padding:var(--s8);background:var(--bg)}
+.rs-logo{display:flex;align-items:center;gap:var(--s3);font-size:var(--lg);
+  font-weight:700;color:var(--p)}
+.rs-h{font-size:var(--xl);font-weight:700;text-align:center}
+.rs-p{font-size:var(--sm);color:var(--txm);text-align:center;max-width:480px}
+.rs-cards{display:flex;gap:var(--s6);flex-wrap:wrap;justify-content:center}
+.rs-card{background:var(--sf);border:1px solid var(--brd);border-radius:var(--rxl);
+  padding:var(--s8);width:270px;cursor:pointer;text-align:left;box-shadow:var(--shsm);
+  transition:all var(--tr)}
+.rs-card:hover{box-shadow:var(--shmd);border-color:var(--p);transform:translateY(-2px)}
+.rs-icon{font-size:2.5rem;margin-bottom:var(--s4)}
+.rs-name{font-size:var(--base);font-weight:700;margin-bottom:var(--s2)}
+.rs-desc{font-size:var(--xs);color:var(--txm);line-height:1.6}
+.rs-cta{display:inline-flex;align-items:center;gap:var(--s2);margin-top:var(--s4);
+  padding:var(--s2) var(--s4);background:var(--p);color:#fff;
+  border-radius:var(--rfl);font-size:var(--xs);font-weight:600}
+/* APP */
+#app{display:none;height:100dvh;overflow:hidden}
+#app.on{display:grid;grid-template-columns:var(--sw) 1fr}
+/* SIDEBAR */
+.sb{background:var(--sf);border-right:1px solid var(--brd);display:flex;
+  flex-direction:column;overflow-y:auto;overscroll-behavior:contain;padding:var(--s4) 0}
+.sb-logo{display:flex;align-items:center;gap:var(--s3);
+  padding:var(--s2) var(--s5);margin-bottom:var(--s4);font-weight:700;font-size:var(--sm)}
+.sb-badge{margin:0 var(--s4) var(--s4);padding:var(--s2) var(--s3);
+  background:var(--phl);color:var(--p);border-radius:var(--rmd);
+  font-size:var(--xs);font-weight:600;display:flex;align-items:center;gap:var(--s2)}
+.ni{display:flex;align-items:center;gap:var(--s3);padding:var(--s2) var(--s5);
+  font-size:var(--sm);font-weight:500;color:var(--txm);cursor:pointer;width:100%;text-align:left}
+.ni:hover{background:var(--sfo);color:var(--tx)}
+.ni.act{background:var(--phl);color:var(--p);font-weight:600}
+.ni-icon{font-size:1rem;width:20px;text-align:center}
+.sb-bot{margin-top:auto;padding:var(--s4) var(--s4) 0;
+  border-top:1px solid var(--brd);display:flex;flex-direction:column;gap:var(--s2)}
+.sb-u{display:flex;align-items:center;gap:var(--s3);padding:var(--s3);
+  border-radius:var(--rmd);background:var(--sfo)}
+.sb-av{width:32px;height:32px;border-radius:var(--rfl);background:var(--p);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:var(--xs);font-weight:700;flex-shrink:0}
+.sb-un{font-size:var(--xs);font-weight:600;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.sb-ur{font-size:.68rem;color:var(--txm)}
+/* MAIN */
+.ma{display:flex;flex-direction:column;overflow:hidden;height:100dvh}
+.tb{display:flex;align-items:center;justify-content:space-between;
+  padding:var(--s4) var(--s8);background:var(--sf);
+  border-bottom:1px solid var(--brd);flex-shrink:0;z-index:10}
+.tb-t{font-size:var(--base);font-weight:700}
+.tb-s{font-size:var(--xs);color:var(--txm)}
+.tb-a{display:flex;align-items:center;gap:var(--s3)}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:var(--s2);
+  padding:var(--s2) var(--s4);border-radius:var(--rmd);
+  font-size:var(--xs);font-weight:600;cursor:pointer;white-space:nowrap}
+.btn-p{background:var(--p);color:#fff}.btn-p:hover{background:var(--ph)}
+.btn-g{background:transparent;color:var(--txm);border:1px solid var(--brd)}
+.btn-g:hover{background:var(--sfo);color:var(--tx)}
+.btn-sm{padding:var(--s1) var(--s3);font-size:.7rem}
+.tb-toggle{width:36px;height:36px;border-radius:var(--rmd);display:flex;
+  align-items:center;justify-content:center;
+  background:var(--sfo);color:var(--txm)}
+.tb-toggle:hover{background:var(--sfd);color:var(--tx)}
+/* CONTENT */
+.ct{overflow-y:auto;overscroll-behavior:contain;flex:1;padding:var(--s6) var(--s8)}
+/* KPI */
+.kg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
+  gap:var(--s4);margin-bottom:var(--s6)}
+.kp{background:var(--sf);border:1px solid var(--brd);border-radius:var(--rlg);
+  padding:var(--s5);box-shadow:var(--shsm)}
+.kp-l{font-size:var(--xs);color:var(--txm);font-weight:600;
+  text-transform:uppercase;letter-spacing:.05em;margin-bottom:var(--s2)}
+.kp-v{font-size:var(--xl);font-weight:700;
+  font-variant-numeric:tabular-nums lining-nums;line-height:1}
+.kp-d{display:flex;align-items:center;gap:var(--s1);margin-top:var(--s2);
+  font-size:var(--xs);font-weight:600;flex-wrap:wrap}
+.dup{color:var(--ok)}.ddn{color:var(--er)}.dfl{color:var(--txm)}
+/* CHARTS */
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4);margin-bottom:var(--s6)}
+.cc{background:var(--sf);border:1px solid var(--brd);border-radius:var(--rlg);
+  padding:var(--s5);box-shadow:var(--shsm)}
+.cc-full{grid-column:1/-1}
+.cc-t{font-size:var(--sm);font-weight:700;margin-bottom:var(--s4)}
+.cw{position:relative;height:200px}
+.cw-tall{height:260px}
+/* TABLE */
+.tc{background:var(--sf);border:1px solid var(--brd);border-radius:var(--rlg);
+  box-shadow:var(--shsm);overflow:hidden;margin-bottom:var(--s6)}
+.tc-h{display:flex;align-items:center;justify-content:space-between;
+  padding:var(--s4) var(--s5);border-bottom:1px solid var(--div)}
+.tc-t{font-size:var(--sm);font-weight:700}
+table{width:100%;border-collapse:collapse}
+th{padding:var(--s3) var(--s5);text-align:left;font-size:var(--xs);font-weight:600;
+  text-transform:uppercase;letter-spacing:.05em;color:var(--txm);
+  background:var(--sfo);border-bottom:1px solid var(--div)}
+td{padding:var(--s3) var(--s5);font-size:var(--xs);
+  border-bottom:1px solid var(--div);font-variant-numeric:tabular-nums;
+  vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--sfo)}
+/* BADGES */
+.bd{display:inline-flex;align-items:center;padding:2px var(--s2);
+  border-radius:var(--rfl);font-size:.7rem;font-weight:600}
+.b-ok{background:var(--okh);color:var(--ok)}
+.b-wn{background:var(--wnh);color:var(--wn)}
+.b-er{background:var(--erh);color:var(--er)}
+.b-pr{background:var(--phl);color:var(--p)}
+.b-gd{background:var(--gdh);color:var(--gd)}
+.b-bl{background:var(--blh);color:var(--bl)}
+.b-gy{background:var(--sfo2);color:var(--txm)}
+/* SECTION HEADER */
+.sh{display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:var(--s5)}
+.sh-t{font-size:var(--base);font-weight:700}
+.sh-s{font-size:var(--xs);color:var(--txm);margin-top:var(--s1)}
+/* FORM */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
+.fi{display:flex;flex-direction:column;gap:var(--s2)}
+.fi-full{grid-column:1/-1}
+.fl{font-size:var(--xs);font-weight:600;color:var(--txm)}
+.fin,.fse,.fte{padding:var(--s3) var(--s4);background:var(--sf2);
+  border:1px solid var(--brd);border-radius:var(--rmd);
+  font:inherit;font-size:var(--sm);color:var(--tx)}
+.fin:focus,.fse:focus,.fte:focus{outline:none;border-color:var(--p);
+  box-shadow:0 0 0 3px oklch(from var(--p) l c h/.15)}
+.fte{resize:vertical;min-height:80px}
+/* PROFILE CARD */
+.pc{display:flex;align-items:flex-start;gap:var(--s6);
+  background:var(--sf);border:1px solid var(--brd);border-radius:var(--rxl);
+  padding:var(--s6);box-shadow:var(--shsm);margin-bottom:var(--s6)}
+.pc-av{width:72px;height:72px;border-radius:var(--rxl);background:var(--p);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:var(--lg);font-weight:700;flex-shrink:0}
+.pc-n{font-size:var(--lg);font-weight:700;margin-bottom:var(--s1)}
+.pc-m{font-size:var(--xs);color:var(--txm);margin-bottom:var(--s3)}
+.pc-st{display:flex;gap:var(--s6)}
+.pc-sv{font-size:var(--base);font-weight:700;font-variant-numeric:tabular-nums}
+.pc-sl{font-size:var(--xs);color:var(--txm)}
+/* CANDIDATES */
+.cn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));
+  gap:var(--s4);margin-bottom:var(--s6)}
+.cn{background:var(--sf);border:1px solid var(--brd);border-radius:var(--rlg);
+  padding:var(--s5);box-shadow:var(--shsm);cursor:pointer;transition:all var(--tr)}
+.cn:hover{box-shadow:var(--shmd);border-color:var(--p)}
+.cn-h{display:flex;align-items:center;gap:var(--s3);margin-bottom:var(--s3)}
+.cn-av{width:40px;height:40px;border-radius:var(--rfl);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:var(--xs);font-weight:700;flex-shrink:0}
+.cn-n{font-weight:700;font-size:var(--sm)}
+.cn-m{font-size:var(--xs);color:var(--txm)}
+.cn-c{display:flex;align-items:center;gap:var(--s2);
+  font-size:var(--xs);margin-bottom:var(--s3)}
+.cdot{width:8px;height:8px;border-radius:50%;background:var(--gd)}
+.tags{display:flex;gap:var(--s2);flex-wrap:wrap}
+/* TASKS */
+.tg{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));
+  gap:var(--s4);margin-bottom:var(--s6)}
+.tk{background:var(--sf);border:1px solid var(--brd);border-radius:var(--rlg);
+  padding:var(--s5);box-shadow:var(--shsm)}
+.tk-h{display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:var(--s3)}
+.tk-t{font-size:var(--sm);font-weight:700;flex:1;margin-right:var(--s3)}
+.tk-r{font-size:var(--sm);font-weight:700;color:var(--gd);white-space:nowrap}
+.tk-d{font-size:var(--xs);color:var(--txm);line-height:1.6;margin-bottom:var(--s4)}
+.tk-f{display:flex;align-items:center;justify-content:space-between}
+/* PROGRESS */
+.bw{background:var(--sfo2);border-radius:var(--rfl);height:6px;
+  overflow:hidden;margin-top:var(--s2)}
+.bar{height:100%;border-radius:var(--rfl);background:var(--p);transition:width .5s}
+/* FUNNEL */
+.fng{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s3);
+  margin-bottom:var(--s6)}
+.fn{background:var(--sf);border:1px solid var(--brd);border-radius:var(--rlg);
+  padding:var(--s4);text-align:center;box-shadow:var(--shsm)}
+.fn-n{font-size:var(--xl);font-weight:700;font-variant-numeric:tabular-nums;
+  margin-bottom:var(--s1)}
+.fn-l{font-size:var(--xs);color:var(--txm)}
+/* TOAST */
+.tst-c{position:fixed;bottom:var(--s6);right:var(--s6);
+  display:flex;flex-direction:column;gap:var(--s2);z-index:9999}
+.tst{background:var(--tx);color:var(--bg);padding:var(--s3) var(--s5);
+  border-radius:var(--rlg);font-size:var(--xs);font-weight:600;
+  box-shadow:var(--shlg);animation:ti .25s ease;max-width:300px}
+@keyframes ti{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:768px){
+  #app.on{grid-template-columns:1fr}
+  .sb{display:none}
+  .cg,.fg{grid-template-columns:1fr}
+  .fng{grid-template-columns:repeat(2,1fr)}
+  .cn-grid{grid-template-columns:1fr}
+  .ct{padding:var(--s4)}
+  .tb{padding:var(--s3) var(--s4)}
+  .kg{grid-template-columns:repeat(2,1fr)}}
+</style>
 </head>
 <body>
-  <div class="page">
-    <div class="page-inner">
-      <header>
-        <div class="logo" aria-label="StudBonus">
-          <div class="logo-mark">SB</div>
-          <div class="logo-title-wrap">
-            <div class="logo-text-main">StudBonus</div>
-            <div class="logo-text-sub">B2B-панели управления</div>
-          </div>
-        </div>
 
-        <div class="header-right">
-          <div class="header-tag">
-            <div class="header-tag-dot"></div>
-            <span>Система для работы с талантами</span>
-          </div>
+<div id="rs">
+  <div class="rs-logo">
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <rect width="32" height="32" rx="8" fill="var(--p)"/>
+      <path d="M7 10h18M7 16h12M7 22h15" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="24" cy="22" r="4" fill="var(--gd)"/>
+      <path d="M22.5 22l1 1 2-2" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    StudBonus
+  </div>
+  <h1 class="rs-h">B2B-панели управления</h1>
+  <p class="rs-p">Выберите роль для входа в личный кабинет партнёра или ВУЗа платформы StudBonus.</p>
+  <div class="rs-cards">
+    <button class="rs-card" onclick="enterRole('partner')">
+      <div class="rs-icon">🏢</div>
+      <div class="rs-name">Кабинет партнёра</div>
+      <div class="rs-desc">HR-аналитика, база кандидатов-студентов, воронка найма, задачи и офферы для привлечения талантов.</div>
+      <div class="rs-cta">Войти →</div>
+    </button>
+    <button class="rs-card" onclick="enterRole('university')">
+      <div class="rs-icon">🎓</div>
+      <div class="rs-name">Кабинет ВУЗа</div>
+      <div class="rs-desc">Мониторинг активности студентов, управление заданиями, партнёрская сеть и настройки платформы.</div>
+      <div class="rs-cta">Войти →</div>
+    </button>
+  </div>
+</div>
 
-          <div class="header-profile">
-            <div class="header-profile-avatar">СТ</div>
-            <div class="header-profile-info">
-              <div class="header-profile-name">ПАО «СберТех»</div>
-              <div class="header-profile-role">Партнёр · HR-tech</div>
-            </div>
-            <button class="header-change-role" type="button">
-              ← Сменить роль
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <main class="hero" role="main">
-        <section class="hero-main" aria-label="Описание платформы">
-          <div class="hero-pill">
-            <span class="hero-pill-label">B2B-панели</span>
-            <span>Управление партнёрами и ВУЗами в одной экосистеме</span>
-          </div>
-
-          <h1 class="hero-title">
-            Личные кабинеты <span>партнёра</span> и <span>ВУЗа</span> платформы StudBonus
-          </h1>
-
-          <p class="hero-subtitle">
-            Выберите роль, чтобы войти в профиль и управлять задачами, студентами, аналитикой и совместными образовательными проектами.
-          </p>
-
-          <div class="hero-metrics">
-            <div class="metric">
-              <div class="metric-label">Активные партнёры</div>
-              <div class="metric-value">120+</div>
-              <div class="metric-caption">HR-команд и компаний в системе</div>
-            </div>
-            <div class="metric">
-              <div class="metric-label">Студенты в воронке</div>
-              <div class="metric-value">15 000+</div>
-              <div class="metric-caption">кандидатов в базе резюме</div>
-            </div>
-          </div>
-
-          <div class="hero-footer">
-            <div class="hero-footer-left">
-              <span class="hero-note">
-                Для входа используйте корпоративную <span>пригласительную ссылку</span> или аккаунт, выданный администратором.
-              </span>
-            </div>
-            <span class="hero-cta-text">Роли можно переключать в любой момент</span>
-          </div>
-        </section>
-
-        <aside class="hero-side" aria-label="Выбор кабинета">
-          <p class="role-caption">
-            Выберите роль, с которой вы работаете в StudBonus. Доступные данные и инструменты зависят от вашего статуса.
-          </p>
-
-          <div class="roles-grid">
-            <!-- Партнёр -->
-            <article class="role-card" aria-label="Кабинет партнёра">
-              <div class="role-card-header">
-                <div class="role-card-title-wrap">
-                  <h2 class="role-card-title">Кабинет партнёра</h2>
-                  <p class="role-card-subtitle">
-                    HR-аналитика, база кандидатов-студентов, воронка найма, задачи и офферы для привлечения талантов.
-                  </p>
-                </div>
-                <span class="role-card-chip">HR-команда / бизнес</span>
-              </div>
-
-              <ul class="role-card-list">
-                <li>
-                  <span class="role-card-bullet"></span>
-                  <span>Работа с воронкой найма и статусами кандидатов.</span>
-                </li>
-                <li>
-                  <span class="role-card-bullet"></span>
-                  <span>Размещение задач, стажировок и офферов для студентов.</span>
-                </li>
-                <li>
-                  <span class="role-card-bullet"></span>
-                  <span>Метрики вовлечённости и эффективность каналов привлечения.</span>
-                </li>
-              </ul>
-
-              <div class="role-card-footer">
-                <a href="#partner-login" class="role-card-link">
-                  Войти в кабинет
-                  <span>→</span>
-                </a>
-                <div class="role-card-meta">
-                  Доступ по приглашению администратора
-                </div>
-              </div>
-            </article>
-
-            <!-- ВУЗ -->
-            <article class="role-card role-card--university" aria-label="Кабинет ВУЗа">
-              <div class="role-card-header">
-                <div class="role-card-title-wrap">
-                  <h2 class="role-card-title">Кабинет ВУЗа</h2>
-                  <p class="role-card-subtitle">
-                    Мониторинг активности студентов, управление заданиями, партнёрская сеть и настройки платформы.
-                  </p>
-                </div>
-                <span class="role-card-chip">Деканат / карьерный центр</span>
-              </div>
-
-              <ul class="role-card-list">
-                <li>
-                  <span class="role-card-bullet"></span>
-                  <span>Отслеживание участия студентов в задачах и проектах партнёров.</span>
-                </li>
-                <li>
-                  <span class="role-card-bullet"></span>
-                  <span>Управление заданиями, образовательными треками и событиями.</span>
-                </li>
-                <li>
-                  <span class="role-card-bullet"></span>
-                  <span>Аналитика по программам, факультетам и партнёрским сущностям.</span>
-                </li>
-              </ul>
-
-              <div class="role-card-footer">
-                <a href="#university-login" class="role-card-link">
-                  Войти в кабинет
-                  <span>→</span>
-                </a>
-                <div class="role-card-meta">
-                  Доступ для аккредитованных ВУЗов
-                </div>
-              </div>
-            </article>
-          </div>
-
-          <!-- Дополнительные CTA на мобильных -->
-          <div class="roles-cta-row">
-            <button class="roles-cta-button roles-cta-button--primary" type="button">
-              Войти как партнёр
-            </button>
-            <button class="roles-cta-button roles-cta-button--ghost" type="button">
-              Войти как ВУЗ
-            </button>
-          </div>
-        </aside>
-      </main>
+<div id="app">
+  <nav class="sb">
+    <div class="sb-logo">
+      <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+        <rect width="32" height="32" rx="8" fill="var(--p)"/>
+        <path d="M7 10h18M7 16h12M7 22h15" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="24" cy="22" r="4" fill="var(--gd)"/>
+        <path d="M22.5 22l1 1 2-2" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      StudBonus
     </div>
-
-    <footer>
-      <div class="footer-inner">
-        <div class="footer-left">
-          StudBonus · Платформа для работы с талантами · © 2026
-        </div>
-        <div class="footer-right">
-          <span class="footer-link">Поддержка</span>
-          <span class="footer-link">Документация</span>
-          <span class="footer-link">Политика конфиденциальности</span>
+    <div class="sb-badge"><span id="rb-i">🏢</span><span id="rb-t">Партнёр</span></div>
+    <div id="nav"></div>
+    <div class="sb-bot">
+      <div class="sb-u">
+        <div class="sb-av" id="sb-av">СТ</div>
+        <div>
+          <div class="sb-un" id="sb-n">ПАО «СберТех»</div>
+          <div class="sb-ur" id="sb-r">Партнёр · HR-tech</div>
         </div>
       </div>
-    </footer>
+      <button class="btn btn-g btn-sm" onclick="back()">← Сменить роль</button>
+    </div>
+  </nav>
+  <div class="ma">
+    <header class="tb">
+      <div>
+        <div class="tb-t" id="pg-t">Обзор</div>
+        <div class="tb-s" id="pg-s">Актуальные показатели</div>
+      </div>
+      <div class="tb-a">
+        <button class="tb-toggle" id="th-btn" aria-label="Сменить тему">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+        <button class="btn btn-p btn-sm" id="cta-btn" onclick="ctaClick()">+ Создать задачу</button>
+      </div>
+    </header>
+    <main class="ct" id="ct"></main>
   </div>
+</div>
+
+<div class="tst-c" id="tc"></div>
+
+<script>
+var R=null,P=null,CI={};
+var NAVS={
+  partner:[{id:"p-dash",ic:"📊",lb:"Обзор"},{id:"p-cand",ic:"👥",lb:"Кандидаты"},
+    {id:"p-task",ic:"📋",lb:"Задачи"},{id:"p-anal",ic:"📈",lb:"Аналитика"},
+    {id:"p-prof",ic:"⚙️",lb:"Профиль"}],
+  university:[{id:"u-dash",ic:"📊",lb:"Обзор"},{id:"u-stud",ic:"🎓",lb:"Студенты"},
+    {id:"u-task",ic:"📋",lb:"Задания"},{id:"u-part",ic:"🤝",lb:"Партнёры"},
+    {id:"u-sett",ic:"⚙️",lb:"Настройки"}]
+};
+var SUBS={
+  "p-dash":"Ключевые KPI партнёра","p-cand":"База кандидатов-студентов",
+  "p-task":"Активные задачи и офферы","p-anal":"Динамика и метрики найма","p-prof":"Профиль организации",
+  "u-dash":"Экосистема ВУЗа","u-stud":"Активность студентов",
+  "u-task":"Учебные и партнёрские задания","u-part":"Партнёрская сеть","u-sett":"Настройки платформы"
+};
+var CANDS=[
+  {id:1,name:"Анна Соколова",fac:"Цифровой маркетинг",yr:3,c:1840,lvl:"Platinum",tags:["HR","SMM","Analytics"],app:true},
+  {id:2,name:"Иван Петров",fac:"Прикл. информатика",yr:4,c:1200,lvl:"Gold",tags:["Python","ML"],app:true},
+  {id:3,name:"Мария Иванова",fac:"Экономика",yr:2,c:750,lvl:"Silver",tags:["Excel","Finance"],app:false},
+  {id:4,name:"Дмитрий Козлов",fac:"Программная инж.",yr:4,c:1650,lvl:"Gold",tags:["React","Node.js"],app:true},
+  {id:5,name:"Екатерина Новикова",fac:"Дизайн",yr:3,c:920,lvl:"Silver",tags:["Figma","UX"],app:false},
+  {id:6,name:"Алексей Смирнов",fac:"Маркетинг",yr:2,c:420,lvl:"Bronze",tags:["SEO","Content"],app:false}
+];
+var TASKS=[
+  {id:1,t:"Тест по цифровому маркетингу",d:"15–20 мин. Базовые digital-инструменты.",r:120,s:"active",c:47,cat:"EdTech"},
+  {id:2,t:"Отклик на стажировку",d:"Летняя стажировка в аналитике. 3–4 курс.",r:200,s:"active",c:23,cat:"HR"},
+  {id:3,t:"Вебинар по AI",d:"Онлайн-сессия: ИИ в бизнесе. 1 час.",r:80,s:"paused",c:89,cat:"EdTech"},
+  {id:4,t:"Регистрация в программе",d:"Заполнить форму и верифицировать профиль.",r:150,s:"active",c:12,cat:"Promo"}
+];
+var STUDS=[
+  {id:1,name:"Анна Соколова",fac:"Цифровой маркетинг",yr:3,c:1840,lvl:"Platinum",act:95,tk:18},
+  {id:2,name:"Дмитрий Козлов",fac:"Программная инж.",yr:4,c:1650,lvl:"Gold",act:88,tk:15},
+  {id:3,name:"Иван Петров",fac:"Прикл. информатика",yr:4,c:1200,lvl:"Gold",act:72,tk:11},
+  {id:4,name:"Сергей Волков",fac:"Финансы",yr:3,c:1100,lvl:"Gold",act:80,tk:13},
+  {id:5,name:"Екатерина Новикова",fac:"Дизайн",yr:3,c:920,lvl:"Silver",act:64,tk:9},
+  {id:6,name:"Мария Иванова",fac:"Экономика",yr:2,c:750,lvl:"Silver",act:55,tk:7},
+  {id:7,name:"Алексей Смирнов",fac:"Маркетинг",yr:2,c:420,lvl:"Bronze",act:33,tk:4},
+  {id:8,name:"Ольга Миронова",fac:"Юриспруденция",yr:1,c:210,lvl:"Bronze",act:21,tk:2}
+];
+var W=["Нед. 1","Нед. 2","Нед. 3","Нед. 4","Нед. 5","Нед. 6"];
+function enterRole(role){
+  R=role;
+  document.getElementById("rs").style.display="none";
+  document.getElementById("app").classList.add("on");
+  document.getElementById("rb-i").textContent=role==="partner"?"🏢":"🎓";
+  document.getElementById("rb-t").textContent=role==="partner"?"Партнёр":"ВУЗ";
+  document.getElementById("sb-av").textContent=role==="partner"?"СТ":"СФУ";
+  document.getElementById("sb-n").textContent=role==="partner"?"ПАО «СберТех»":"Сиб. фед. ун-т";
+  document.getElementById("sb-r").textContent=role==="partner"?"Партнёр · HR-tech":"ВУЗ · Администратор";
+  document.getElementById("cta-btn").textContent=role==="partner"?"+ Создать задачу":"+ Добавить задание";
+  var nav=document.getElementById("nav");
+  nav.innerHTML=NAVS[role].map(function(n){
+    return '<button class="ni" data-p="'+n.id+'" onclick="go(\''+n.id+'\')"><span class="ni-icon">'+n.ic+'</span>'+n.lb+'</button>';
+  }).join("");
+  go(NAVS[role][0].id);
+}
+function back(){
+  R=null; document.getElementById("app").classList.remove("on");
+  document.getElementById("rs").style.display="flex"; dci();
+}
+function go(pid){
+  P=pid;
+  document.querySelectorAll(".ni").forEach(function(el){el.classList.toggle("act",el.dataset.p===pid)});
+  var item=(NAVS[R]||[]).find(function(n){return n.id===pid});
+  document.getElementById("pg-t").textContent=item?item.lb:"—";
+  document.getElementById("pg-s").textContent=SUBS[pid]||"";
+  dci(); render(pid);
+}
+function dci(){Object.values(CI).forEach(function(c){try{c.destroy()}catch(e){}});CI={}}
+function dc(){
+  var dk=document.documentElement.getAttribute("data-theme")==="dark";
+  return {t:dk?"#cdccca":"#7a7974",g:dk?"rgba(255,255,255,.06)":"rgba(0,0,0,.06)",
+    p:dk?"#4f98a3":"#01696f",s:dk?"#6daa45":"#437a22",
+    gd:dk?"#e8af34":"#d19900",b:dk?"#5591c7":"#006494",w:dk?"#bb653b":"#964219"};
+}
+function mkLine(id,labels,ds){
+  var ctx=document.getElementById(id); if(!ctx)return;
+  var d=dc();
+  CI[id]=new Chart(ctx,{type:"line",data:{labels:labels,datasets:ds},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:500},
+    plugins:{legend:{labels:{color:d.t,font:{size:11}}}},
+    scales:{x:{ticks:{color:d.t,font:{size:10}},grid:{color:d.g}},
+    y:{ticks:{color:d.t,font:{size:10}},grid:{color:d.g}}}}});
+}
+function mkBar(id,labels,data,color){
+  var ctx=document.getElementById(id); if(!ctx)return;
+  var d=dc();
+  CI[id]=new Chart(ctx,{type:"bar",data:{labels:labels,datasets:[{data:data,
+    backgroundColor:color||d.p,borderRadius:6,borderSkipped:false}]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:500},
+    plugins:{legend:{display:false}},
+    scales:{x:{ticks:{color:d.t,font:{size:10}},grid:{color:"transparent"}},
+    y:{ticks:{color:d.t,font:{size:10}},grid:{color:d.g}}}}});
+}
+function mkDough(id,labels,data,colors){
+  var ctx=document.getElementById(id); if(!ctx)return;
+  var d=dc();
+  CI[id]=new Chart(ctx,{type:"doughnut",data:{labels:labels,datasets:[{data:data,
+    backgroundColor:colors,borderWidth:0,hoverOffset:6}]},
+    options:{responsive:true,maintainAspectRatio:false,animation:{duration:500},cutout:"65%",
+    plugins:{legend:{position:"right",labels:{color:d.t,font:{size:10},padding:10,boxWidth:12}}}}});
+}
+function kpi(label,val,delta,dir,sub){
+  var c={"up":"dup","down":"ddn","flat":"dfl"}[dir]||"dfl";
+  return '<div class="kp"><div class="kp-l">'+label+'</div><div class="kp-v">'+val+'</div>'
+    +'<div class="kp-d '+c+'"><span>'+delta+'</span>'
+    +'<span style="color:var(--txf);font-weight:400">'+sub+'</span></div></div>';
+}
+function fnStep(num,label){
+  return '<div class="fn"><div class="fn-n">'+num+'</div><div class="fn-l">'+label+'</div></div>';
+}
+function lvl(l){
+  var m={Platinum:"b-gd",Gold:"b-gd",Silver:"b-pr",Bronze:"b-wn"};
+  var i={Platinum:"💎",Gold:"🥇",Silver:"🥈",Bronze:"🥉"};
+  return '<span class="bd '+(m[l]||"b-pr")+'">'+(i[l]||"")+' '+l+'</span>';
+}
+function avbg(l){return{Platinum:"#d19900",Gold:"#da7101",Silver:"#006494",Bronze:"#964219"}[l]||"var(--p)"}
+function ctaClick(){toast(R==="partner"?"✅ Форма создания задачи открыта":"✅ Форма создания задания открыта")}
+function toggleTask(id){
+  var t=TASKS.find(function(x){return x.id===id});
+  if(!t)return;
+  t.s=t.s==="active"?"paused":"active";
+  go(P); toast(t.s==="active"?"▶ Задача запущена":"⏸ Задача на паузе");
+}
+function toast(msg){
+  var c=document.getElementById("tc"),el=document.createElement("div");
+  el.className="tst"; el.textContent=msg; c.appendChild(el);
+  setTimeout(function(){el.style.opacity="0";el.style.transform="translateY(4px)";
+    el.style.transition=".25s";setTimeout(function(){el.remove()},300);},2500);
+}
+function render(pid){
+  var c=document.getElementById("ct");
+  var pages={
+    "p-dash":pDash,"p-cand":pCand,"p-task":pTask,"p-anal":pAnal,"p-prof":pProf,
+    "u-dash":uDash,"u-stud":uStud,"u-task":uTask,"u-part":uPart,"u-sett":uSett
+  };
+  c.innerHTML=pages[pid]?pages[pid]():"";
+  requestAnimationFrame(function(){initCharts(pid)});
+}
+function pDash(){
+  return '<div class="kg">'
+    +kpi("Откликов","23","↑ 12%","up","vs прошлый мес.")
+    +kpi("Shortlist","7","↑ 3","up","к интервью")
+    +kpi("Time-to-Hire","14 дн","↓ 8 дн","up","было 22 дня")
+    +kpi("CR отклик→найм","8%","↑ 2%","up","норма 3.5%")
+    +kpi("Задач активных","4","→ 0","flat","")
+    +kpi("Выполнений / мес","171","↑ 28","up","")
+    +'</div>'
+    +'<div class="cg">'
+    +'<div class="cc"><div class="cc-t">Отклики по неделям</div><div class="cw"><canvas id="ch-r"></canvas></div></div>'
+    +'<div class="cc"><div class="cc-t">Кандидаты по уровням</div><div class="cw"><canvas id="ch-cp"></canvas></div></div>'
+    +'</div>'
+    +'<div class="sh"><div><div class="sh-t">Воронка найма</div><div class="sh-s">Текущий поток</div></div></div>'
+    +'<div class="fng">'+fnStep("23","Откликнулись")+fnStep("14","Прошли тест")+fnStep("7","Шортлист")+fnStep("2","Найм/оффер")+'</div>'
+    +'<div class="tc"><div class="tc-h"><div class="tc-t">Последние отклики</div></div>'
+    +'<table><thead><tr><th>Студент</th><th>Факультет</th><th>StudCoins</th><th>Уровень</th><th>Статус</th></tr></thead><tbody>'
+    +CANDS.filter(function(c){return c.app}).map(function(c){
+      return '<tr><td><b>'+c.name+'</b></td><td>'+c.fac+'</td><td><b>'+c.c.toLocaleString()+' ₵</b></td>'
+        +'<td>'+lvl(c.lvl)+'</td><td><span class="bd b-pr">Новый</span></td></tr>';
+    }).join("")+'</tbody></table></div>';
+}
+function pCand(){
+  return '<div class="sh"><div><div class="sh-t">База кандидатов</div></div>'
+    +'<div style="display:flex;gap:8px"><button class="btn btn-g btn-sm" onclick="toast(\'📤 CSV экспортирован\')">↓ CSV</button>'
+    +'<button class="btn btn-g btn-sm" onclick="toast(\'📄 PDF сформирован\')">↓ PDF</button></div></div>'
+    +'<div class="cn-grid">'+CANDS.map(function(c){
+      return '<div class="cn" onclick="toast(\'📋 Профиль '+c.name+' открыт\')">'
+        +'<div class="cn-h"><div class="cn-av" style="background:'+avbg(c.lvl)+'">'+c.name.split(" ").map(function(w){return w[0]}).join("")+'</div>'
+        +'<div><div class="cn-n">'+c.name+'</div><div class="cn-m">'+c.fac+' · '+c.yr+' курс</div></div></div>'
+        +'<div class="cn-c"><div class="cdot"></div><span><b>'+c.c.toLocaleString()+' ₵</b></span>'+lvl(c.lvl)+'</div>'
+        +'<div class="tags">'+c.tags.map(function(t){return '<span class="bd b-bl">'+t+'</span>'}).join("")
+        +(c.app?'<span class="bd b-ok">Откликнулся</span>':"")+'</div></div>';
+    }).join("")+'</div>'
+    +'<div class="tc"><div class="tc-h"><div class="tc-t">Детальная таблица</div></div>'
+    +'<table><thead><tr><th>Имя</th><th>Факультет</th><th>Курс</th><th>StudCoins</th><th>Уровень</th><th>Отклик</th></tr></thead><tbody>'
+    +CANDS.map(function(c){
+      return '<tr><td><b>'+c.name+'</b></td><td style="color:var(--txm)">'+c.fac+'</td>'
+        +'<td>'+c.yr+'</td><td><b>'+c.c.toLocaleString()+' ₵</b></td><td>'+lvl(c.lvl)+'</td>'
+        +'<td>'+(c.app?'<span class="bd b-ok">Да</span>':'<span class="bd b-gy">Нет</span>')+'</td></tr>';
+    }).join("")+'</tbody></table></div>';
+}
+function pTask(){
+  return '<div class="sh"><div><div class="sh-t">Задачи и офферы</div></div>'
+    +'<button class="btn btn-p btn-sm" onclick="toast(\'✅ Форма задачи открыта\')">+ Новая задача</button></div>'
+    +'<div class="tg">'+TASKS.map(function(t){
+      return '<div class="tk"><div class="tk-h"><div class="tk-t">'+t.t+'</div><div class="tk-r">+'+t.r+' ₵</div></div>'
+        +'<div class="tk-d">'+t.d+'</div>'
+        +'<div class="tk-f"><div style="display:flex;gap:6px;align-items:center">'
+        +'<span class="bd '+(t.s==="active"?"b-ok":"b-wn")+'">'+(t.s==="active"?"Активна":"Пауза")+'</span>'
+        +'<span style="font-size:var(--xs);color:var(--txm)">'+t.c+' выполн.</span></div>'
+        +'<div style="display:flex;gap:6px">'
+        +'<button class="btn btn-g btn-sm" onclick="toggleTask('+t.id+')">'+(t.s==="active"?"⏸ Пауза":"▶ Запуск")+'</button>'
+        +'<button class="btn btn-g btn-sm" onclick="toast(\'✏️ Редактор открыт\')">✏️</button></div></div>'
+        +'<div class="bw"><div class="bar" style="width:'+Math.min(100,t.c*2)+'%"></div></div>'
+        +'<div style="font-size:.68rem;color:var(--txm);margin-top:4px">'+t.c+' из ~100 целевых</div></div>';
+    }).join("")+'</div>';
+}
+function pAnal(){
+  return '<div class="kg">'
+    +kpi("DAU","142","↑ 12%","up","")
+    +kpi("MAU","1 840","↑ 8%","up","")
+    +kpi("CTR задач","18%","↑ 3%","up","")
+    +kpi("NPS партнёра","62","↑ 4","up","")
+    +kpi("CAC","180 ₽","↓ 70 ₽","up","было 250 ₽")
+    +kpi("CR отклик→найм","8%","↑ 2%","up","")
+    +'</div>'
+    +'<div class="cg">'
+    +'<div class="cc cc-full"><div class="cc-t">Отклики и выполнения по неделям</div><div class="cw cw-tall"><canvas id="ch-w"></canvas></div></div>'
+    +'<div class="cc"><div class="cc-t">По уровням</div><div class="cw"><canvas id="ch-l"></canvas></div></div>'
+    +'<div class="cc"><div class="cc-t">Активность по дням</div><div class="cw"><canvas id="ch-d"></canvas></div></div>'
+    +'</div>'
+    +'<div class="tc"><div class="tc-h"><div class="tc-t">KPI-дашборд</div>'
+    +'<button class="btn btn-g btn-sm" onclick="toast(\'📤 XLSX экспортирован\')">↓ XLSX</button></div>'
+    +'<table><thead><tr><th>Метрика</th><th>Текущее</th><th>Цель ×1</th><th>Цель ×3</th><th>Статус</th></tr></thead><tbody>'
+    +'<tr><td>NPS</td><td><b>62</b></td><td>50</td><td>70</td><td><span class="bd b-ok">✓ Достигнуто</span></td></tr>'
+    +'<tr><td>D30 Retention</td><td><b>35%</b></td><td>22%</td><td>45%</td><td><span class="bd b-ok">✓ Достигнуто</span></td></tr>'
+    +'<tr><td>Time-to-Hire</td><td><b>14 дн</b></td><td>28–42 дн</td><td>14 дн</td><td><span class="bd b-ok">✓ Достигнуто</span></td></tr>'
+    +'<tr><td>CAC</td><td><b>180 ₽</b></td><td>250 ₽</td><td>180 ₽</td><td><span class="bd b-ok">✓ Достигнуто</span></td></tr>'
+    +'<tr><td>CR отклик→найм</td><td><b>8%</b></td><td>3.5%</td><td>8%</td><td><span class="bd b-ok">✓ Достигнуто</span></td></tr>'
+    +'<tr><td>DAU/MAU</td><td><b>0.28</b></td><td>0.25</td><td>0.35</td><td><span class="bd b-wn">~ В прогрессе</span></td></tr>'
+    +'</tbody></table></div>';
+}
+function pProf(){
+  return '<div class="pc"><div class="pc-av">СТ</div><div>'
+    +'<div class="pc-n">ПАО «СберТех»</div><div class="pc-m">Партнёр StudBonus · HR-tech · Москва</div>'
+    +'<div class="pc-st"><div><div class="pc-sv">4</div><div class="pc-sl">задачи</div></div>'
+    +'<div><div class="pc-sv">171</div><div class="pc-sl">выполнений</div></div>'
+    +'<div><div class="pc-sv">23</div><div class="pc-sl">откликов</div></div></div></div></div>'
+    +'<div class="tc" style="padding:var(--s6)">'
+    +'<div class="sh-t" style="margin-bottom:var(--s5)">Данные организации</div>'
+    +'<div class="fg">'
+    +'<div class="fi"><label class="fl">Название компании</label><input class="fin" value="ПАО «СберТех»"></div>'
+    +'<div class="fi"><label class="fl">Категория</label><select class="fse"><option>HR-tech</option><option>EdTech</option><option>Fintech</option><option>Retail</option></select></div>'
+    +'<div class="fi"><label class="fl">Контактный email</label><input class="fin" value="hr@sbertech.ru"></div>'
+    +'<div class="fi"><label class="fl">Бюджет StudCoins (мес.)</label><input class="fin" type="number" value="50000"></div>'
+    +'<div class="fi fi-full"><label class="fl">Описание для студентов</label>'
+    +'<textarea class="fte">Один из ведущих IT-работодателей России. Стажировки и быстрый карьерный рост.</textarea></div>'
+    +'</div><div style="margin-top:var(--s5);display:flex;gap:var(--s3);flex-wrap:wrap">'
+    +'<button class="btn btn-p" onclick="toast(\'✅ Профиль сохранён\')">Сохранить</button>'
+    +'<button class="btn btn-g" onclick="toast(\'🔔 Уведомления настроены\')">Уведомления</button>'
+    +'<button class="btn btn-g" onclick="toast(\'🔑 Пароль изменён\')">Сменить пароль</button>'
+    +'</div></div>';
+}
+function uDash(){
+  return '<div class="kg">'
+    +kpi("Студентов в системе","400","↑ 12%","up","из ~5 858")
+    +kpi("DAU","142","↑ 8","up","сегодня")
+    +kpi("QR-сканирований","1 240","↑ 340","up","за месяц")
+    +kpi("Ср. StudCoins","840 ₵","↑ 60","up","")
+    +kpi("NPS студентов","54","↑ 4","up","цель: 50+")
+    +kpi("Партнёров","7","↑ 2","up","активных")
+    +'</div>'
+    +'<div class="cg">'
+    +'<div class="cc"><div class="cc-t">Регистрации по неделям</div><div class="cw"><canvas id="ch-ur"></canvas></div></div>'
+    +'<div class="cc"><div class="cc-t">Студенты по уровням</div><div class="cw"><canvas id="ch-ul"></canvas></div></div>'
+    +'<div class="cc cc-full"><div class="cc-t">DAU по факультетам (топ-5)</div><div class="cw"><canvas id="ch-uf"></canvas></div></div>'
+    +'</div>'
+    +'<div class="sh"><div><div class="sh-t">Топ студентов недели</div></div></div>'
+    +'<div class="tc"><table><thead><tr><th>#</th><th>Студент</th><th>Факультет</th><th>StudCoins</th><th>Уровень</th><th>Активность</th></tr></thead><tbody>'
+    +STUDS.slice(0,5).map(function(s,i){
+      return '<tr><td style="color:var(--txf);font-weight:700">'+(i+1)+'</td>'
+        +'<td><b>'+s.name+'</b></td><td style="color:var(--txm)">'+s.fac+'</td>'
+        +'<td><b>'+s.c.toLocaleString()+' ₵</b></td><td>'+lvl(s.lvl)+'</td>'
+        +'<td><div style="display:flex;align-items:center;gap:8px">'
+        +'<div style="width:80px"><div class="bw"><div class="bar" style="width:'+s.act+'%"></div></div></div>'
+        +'<span style="font-size:var(--xs)">'+s.act+'%</span></div></td></tr>';
+    }).join("")+'</tbody></table></div>';
+}
+function uStud(){
+  return '<div class="sh"><div><div class="sh-t">Все студенты</div><div class="sh-s">'+STUDS.length+' из 400 активных</div></div>'
+    +'<div style="display:flex;gap:8px"><button class="btn btn-g btn-sm" onclick="toast(\'📤 CSV экспортирован\')">↓ CSV</button>'
+    +'<button class="btn btn-p btn-sm" onclick="toast(\'📄 PDF готов\')">↓ PDF</button></div></div>'
+    +'<div class="tc"><table><thead><tr><th>Студент</th><th>Факультет</th><th>Курс</th><th>StudCoins</th><th>Уровень</th><th>Заданий</th><th>Активность</th></tr></thead><tbody>'
+    +STUDS.map(function(s){
+      return '<tr><td><b>'+s.name+'</b></td><td style="color:var(--txm)">'+s.fac+'</td>'
+        +'<td>'+s.yr+'</td><td><b>'+s.c.toLocaleString()+' ₵</b></td><td>'+lvl(s.lvl)+'</td>'
+        +'<td>'+s.tk+'</td>'
+        +'<td><div style="display:flex;align-items:center;gap:8px">'
+        +'<div style="width:70px"><div class="bw"><div class="bar" style="width:'+s.act+'%"></div></div></div>'
+        +'<span style="font-size:var(--xs)">'+s.act+'%</span></div></td></tr>';
+    }).join("")+'</tbody></table></div>'
+    +'<div class="cg">'
+    +'<div class="cc"><div class="cc-t">По уровням</div><div class="cw"><canvas id="ch-sl"></canvas></div></div>'
+    +'<div class="cc"><div class="cc-t">Активность по факультетам</div><div class="cw"><canvas id="ch-sf"></canvas></div></div>'
+    +'</div>';
+}
+function uTask(){
+  var ut=[
+    {t:"Посетить День карьеры",r:80,c:234,cat:"Мероприятие",s:"active"},
+    {t:"Онлайн-курс ВУЗа",r:150,c:89,cat:"Обучение",s:"active"},
+    {t:"Участие в конференции",r:200,c:34,cat:"Наука",s:"active"},
+    {t:"Волонтёрство",r:100,c:56,cat:"Активность",s:"paused"},
+    {t:"Пригласить однокурсника",r:120,c:142,cat:"Реферал",s:"active"},
+    {t:"Заполнить профиль",r:50,c:312,cat:"Онбординг",s:"active"}
+  ];
+  return '<div class="sh"><div><div class="sh-t">Задания ВУЗа</div></div>'
+    +'<button class="btn btn-p btn-sm" onclick="toast(\'✅ Форма задания открыта\')">+ Добавить</button></div>'
+    +'<div class="tg">'+ut.map(function(t){
+      return '<div class="tk"><div class="tk-h"><div class="tk-t">'+t.t+'</div><div class="tk-r">+'+t.r+' ₵</div></div>'
+        +'<div style="display:flex;gap:6px;margin-bottom:var(--s3)">'
+        +'<span class="bd b-bl">'+t.cat+'</span>'
+        +'<span class="bd '+(t.s==="active"?"b-ok":"b-wn")+'">'+(t.s==="active"?"Активно":"Пауза")+'</span></div>'
+        +'<div style="font-size:var(--xs);color:var(--txm);margin-bottom:var(--s3)">'+t.c+' студентов выполнили</div>'
+        +'<div class="bw"><div class="bar" style="width:'+Math.min(100,t.c/4)+'%"></div></div>'
+        +'<div style="display:flex;gap:6px;margin-top:var(--s3)">'
+        +'<button class="btn btn-g btn-sm" style="flex:1" onclick="toast(\'✏️ Редактирование задания\')">✏️ Изменить</button>'
+        +'<button class="btn btn-g btn-sm" onclick="toast(\'📊 Статистика задания\')">📊</button></div></div>';
+    }).join("")+'</div>';
+}
+function uPart(){
+  var ps=[
+    {n:"ПАО «СберТех»",cat:"HR-tech",tk:4,b:"50 000 ₵",s:"active"},
+    {n:"Яндекс",cat:"IT / AI",tk:3,b:"40 000 ₵",s:"active"},
+    {n:"OZON",cat:"Retail",tk:5,b:"60 000 ₵",s:"active"},
+    {n:"Нетология",cat:"EdTech",tk:6,b:"45 000 ₵",s:"active"},
+    {n:"VK Education",cat:"EdTech",tk:3,b:"35 000 ₵",s:"active"},
+    {n:"Авито",cat:"HR-tech",tk:1,b:"15 000 ₵",s:"pending"}
+  ];
+  return '<div class="kg">'
+    +kpi("Партнёров","7","↑ 2","up","активных")
+    +kpi("Задач от партнёров","24","↑ 4","up","")
+    +kpi("Бюджет","275К ₵","↑ 40К","up","")
+    +kpi("На рассмотрении","1","→","flat","")
+    +'</div>'
+    +'<div class="sh"><div><div class="sh-t">Партнёрская сеть</div></div>'
+    +'<button class="btn btn-p btn-sm" onclick="toast(\'📝 Форма партнёра открыта\')">+ Пригласить</button></div>'
+    +'<div class="tc"><table><thead><tr><th>Компания</th><th>Категория</th><th>Задачи</th><th>Бюджет</th><th>Статус</th><th></th></tr></thead><tbody>'
+    +ps.map(function(p){
+      return '<tr><td><b>'+p.n+'</b></td><td><span class="bd b-bl">'+p.cat+'</span></td>'
+        +'<td>'+p.tk+'</td><td>'+p.b+'</td>'
+        +'<td><span class="bd '+(p.s==="active"?"b-ok":"b-wn")+'">'+(p.s==="active"?"Активен":"На рассмотрении")+'</span></td>'
+        +'<td><button class="btn btn-g btn-sm" onclick="toast(\'📋 Договор '+p.n+'\')">Договор</button></td></tr>';
+    }).join("")+'</tbody></table></div>';
+}
+function uSett(){
+  return '<div class="pc"><div class="pc-av" style="font-size:var(--sm)">СФУ</div><div>'
+    +'<div class="pc-n">Сибирский федеральный университет</div>'
+    +'<div class="pc-m">Участник StudBonus · Красноярск</div>'
+    +'<div class="pc-st">'
+    +'<div><div class="pc-sv">400</div><div class="pc-sl">студентов</div></div>'
+    +'<div><div class="pc-sv">7</div><div class="pc-sl">партнёров</div></div>'
+    +'<div><div class="pc-sv">24</div><div class="pc-sl">задания</div></div>'
+    +'</div></div></div>'
+    +'<div class="tc" style="padding:var(--s6)">'
+    +'<div class="sh-t" style="margin-bottom:var(--s5)">Настройки платформы</div>'
+    +'<div class="fg">'
+    +'<div class="fi"><label class="fl">Название ВУЗа</label><input class="fin" value="Сибирский федеральный университет"></div>'
+    +'<div class="fi"><label class="fl">Город</label><input class="fin" value="Красноярск"></div>'
+    +'<div class="fi"><label class="fl">Email администратора</label><input class="fin" value="admin@sfu-kras.ru"></div>'
+    +'<div class="fi"><label class="fl">Студентов (целевая аудитория)</label><input class="fin" type="number" value="5858"></div>'
+    +'<div class="fi fi-full"><label class="fl">Приветствие для студентов</label>'
+    +'<textarea class="fte">Добро пожаловать в StudBonus! Выполняй задания, копи StudCoins и открывай карьерные возможности.</textarea></div>'
+    +'</div>'
+    +'<div style="margin-top:var(--s5);display:flex;gap:var(--s3);flex-wrap:wrap">'
+    +'<button class="btn btn-p" onclick="toast(\'✅ Настройки сохранены\')">Сохранить</button>'
+    +'<button class="btn btn-g" onclick="toast(\'🔔 Push-уведомления настроены\')">Push-уведомления</button>'
+    +'<button class="btn btn-g" onclick="toast(\'📤 Выгрузка готова\')">Экспорт данных</button>'
+    +'<button class="btn btn-g" onclick="toast(\'📑 Отчёт для ректора сформирован\')">Отчёт ректору</button>'
+    +'</div></div>';
+}
+function initCharts(pid){
+  var d=dc();
+  if(pid==="p-dash"){
+    mkLine("ch-r",W,[{label:"Отклики",data:[5,8,11,14,18,23],borderColor:d.p,backgroundColor:"transparent",tension:.4,pointRadius:3}]);
+    mkDough("ch-cp",["Platinum","Gold","Silver","Bronze"],[1,3,2,0],[d.gd,d.p,d.b,d.w]);
+  }
+  if(pid==="p-anal"){
+    mkLine("ch-w",W,[
+      {label:"Отклики",data:[5,8,11,14,18,23],borderColor:d.p,backgroundColor:"transparent",tension:.4,pointRadius:3},
+      {label:"Выполнения",data:[28,35,52,69,88,171],borderColor:d.gd,backgroundColor:"transparent",tension:.4,pointRadius:3}
+    ]);
+    mkDough("ch-l",["Platinum","Gold","Silver","Bronze"],[8,22,35,35],[d.gd,d.p,d.b,d.w]);
+    mkBar("ch-d",["Пн","Вт","Ср","Чт","Пт","Сб","Вс"],[85,92,110,98,120,55,32],d.p);
+  }
+  if(pid==="u-dash"){
+    mkLine("ch-ur",W,[{label:"Рег-ции",data:[24,58,102,189,310,400],borderColor:d.p,backgroundColor:"transparent",tension:.4,pointRadius:3}]);
+    mkDough("ch-ul",["Platinum","Gold","Silver","Bronze"],[12,48,140,200],[d.gd,d.p,d.b,d.w]);
+    mkBar("ch-uf",["Цифр.мар.","Прикл.инф.","Экономика","Прогр.инж.","Дизайн"],[95,88,72,65,60],d.b);
+  }
+  if(pid==="u-stud"){
+    mkDough("ch-sl",["Platinum","Gold","Silver","Bronze"],[1,3,2,2],[d.gd,d.p,d.b,d.w]);
+    mkBar("ch-sf",["ЦМ","ПИ","Эк.","ПрИ","Диз.","Мар.","Юр.","Фин."],[95,88,72,64,55,33,21,80],d.p);
+  }
+}
+(function(){
+  var root=document.documentElement;
+  root.setAttribute("data-theme",matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
+  document.getElementById("th-btn").addEventListener("click",function(){
+    var c=root.getAttribute("data-theme"),n=c==="dark"?"light":"dark";
+    root.setAttribute("data-theme",n);
+    this.innerHTML=n==="dark"
+      ?'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+      :'<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+    if(P){dci();requestAnimationFrame(function(){initCharts(P)});}
+  });
+})();
+</script>
 </body>
 </html>
